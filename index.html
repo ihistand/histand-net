@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ivan Histand</title>
+<meta name="description" content="Ivan Histand — software I build and how to reach me.">
+<meta name="author" content="Ivan Histand">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5f1ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15130f" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://histand.net/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ivan Histand">
+<meta property="og:title" content="Ivan Histand">
+<meta property="og:description" content="Software I build and how to reach me.">
+<meta property="og:url" content="https://histand.net/">
+<meta property="og:locale" content="en_US">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231f3a5f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='56' text-anchor='middle' fill='%23e8b04a'%3EH%3C/text%3E%3C/svg%3E">
+
+<style>
+  :root {
+    --bg: #f5f1ea;
+    --ink: #1c1a16;
+    --ink-dim: #6b655b;
+    --rule: #d9d2c5;
+    --accent: #1f3a5f;
+    --accent-ink: #e8b04a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15130f;
+      --ink: #ece6da;
+      --ink-dim: #9b9386;
+      --rule: #2e2a23;
+      --accent: #e8b04a;
+      --accent-ink: #15130f;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1.25rem;
+  }
+  main { width: 100%; max-width: 34rem; }
+  h1 {
+    font-weight: 500;
+    font-size: clamp(2rem, 6vw, 2.75rem);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 0 0.35rem;
+  }
+  .lede { color: var(--ink-dim); margin: 0 0 2.25rem; }
+  h2 {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin: 0 0 0.6rem;
+  }
+  ul { list-style: none; margin: 0 0 2rem; padding: 0; }
+  li {
+    display: flex; gap: 1rem; align-items: baseline;
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  li:last-child { border-bottom: 1px solid var(--rule); }
+  li a { flex: 0 0 9rem; }
+  li span { color: var(--ink-dim); }
+  a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  a:hover, a:focus-visible { border-bottom-color: var(--accent); color: var(--accent); outline: none; }
+  .contact a { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.95rem; }
+  .contact { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: 0; }
+  @media (max-width: 26rem) {
+    li { flex-direction: column; gap: 0.15rem; }
+    li a { flex-basis: auto; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Ivan Histand</h1>
+  <p class="lede">Data engineering, and tools for the people who do it.</p>
+
+  <h2>Projects</h2>
+  <ul>
+    <li><a href="https://sqlanvil.com">SQLAnvil</a><span>SQL workflow engine for BigQuery, Postgres, Supabase, and MySQL</span></li>
+    <li><a href="https://incise.dev">Incise</a><span>Native macOS editor for CSV, text, and code</span></li>
+    <li><a href="https://checklists.io">Checklists.io</a><span>Runbooks that AI agents execute and humans approve</span></li>
+    <li><a href="https://listanvil.com">ListAnvil</a><span>Cross-marketplace listing for resellers</span></li>
+    <li><a href="https://graver.dev">Graver</a><span>macOS workbench for Looker and BigQuery/Dataform</span></li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p class="contact">
+    <a href="mailto:ivan@histand.net">ivan@histand.net</a>
+    <a href="https://github.com/ihistand">github.com/ihistand</a>
+  </p>
+</main>
+</body>
+</html>

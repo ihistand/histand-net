@@ -1,0 +1,192 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.histand.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "histand.com"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.histand.com"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "histand.org"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.histand.org"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "histands.com"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.histands.com"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "histands.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.histands.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "histands.org"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.histands.org"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "anilak.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.anilak.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "hinault.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.hinault.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "ivanivan.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    },
+    {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.ivanivan.net"
+        }
+      ],
+      "destination": "https://histand.net/:path",
+      "permanent": true
+    }
+  ]
+}
