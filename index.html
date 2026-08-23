@@ -18,8 +18,50 @@
 <meta property="og:description" content="Software I build and how to reach me.">
 <meta property="og:url" content="https://histand.net/">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://histand.net/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ivan Histand — data engineering, and tools for the people who do it.">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231f3a5f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='56' text-anchor='middle' fill='%23e8b04a'%3EH%3C/text%3E%3C/svg%3E">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ivan Histand">
+<meta name="twitter:description" content="Software I build and how to reach me.">
+<meta name="twitter:image" content="https://histand.net/og.png">
+
+<!-- .ico first as the fallback, SVG after it so modern browsers prefer the crisp
+     one. /favicon.ico is also requested by things that never read this markup at
+     all — crawlers, feed readers, the odd bookmark tool — so the file has to
+     exist whether or not it is linked. -->
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231f3a5f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='56' text-anchor='middle' fill='%23e8b04a'%3EH%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Person rather than Organization: this is a name card, and the query it should
+     win is someone's name. Every claim here is one the page itself makes — no
+     invented employer, job title, or social profile, because a schema asserting
+     something the page doesn't say is the kind of mismatch that gets structured
+     data ignored wholesale. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ivan Histand",
+  "url": "https://histand.net/",
+  "email": "mailto:ivan@histand.net",
+  "image": "https://histand.net/og.png",
+  "description": "Data engineering, and tools for the people who do it.",
+  "sameAs": ["https://github.com/ihistand"],
+  "knowsAbout": [
+    "Data engineering",
+    "SQL",
+    "BigQuery",
+    "Dataform",
+    "PostgreSQL",
+    "Developer tools"
+  ]
+}
+</script>
 
 <style>
   :root {
