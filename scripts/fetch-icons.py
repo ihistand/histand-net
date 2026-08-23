@@ -42,6 +42,7 @@ SITES = {
     "graver": "https://graver.dev/",
     "claude-skills": "https://github.com/",
     "acuantia": "https://acuantia.com/",
+    "rotoplas": "https://rotoplas.com/",
 }
 
 
