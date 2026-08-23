@@ -82,8 +82,95 @@
       --accent-ink: #15130f;
     }
   }
+  /* The background wash gets its own colours rather than reusing --accent, which
+     swaps meaning between themes (navy in light, gold in dark). Four hues per
+     theme rather than two: navy and gold are nearly opposite, so a wash made of
+     only those two reads as one warm patch and one cool patch. Teal and plum sit
+     between them and give the mix somewhere to travel. */
+  :root {
+    --wash-a: rgba(31, 58, 95, 0.30);    /* navy  */
+    --wash-b: rgba(232, 176, 74, 0.30);  /* gold  */
+    --wash-c: rgba(44, 107, 107, 0.26);  /* teal, bridging the two   */
+    --wash-d: rgba(150, 92, 120, 0.22);  /* muted plum, the cool end */
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --wash-a: rgba(232, 176, 74, 0.22);
+      --wash-b: rgba(63, 106, 163, 0.34);
+      --wash-c: rgba(58, 130, 122, 0.28);
+      --wash-d: rgba(176, 106, 59, 0.24);
+    }
+  }
+
   * { box-sizing: border-box; }
   html, body { margin: 0; }
+
+  /* `position: fixed` is load-bearing twice over: body is a centred grid, so an
+     in-flow pseudo-element would become a grid item and push the card off
+     centre — and fixed keeps the wash still while the page scrolls. Oversized by
+     30% on every side so the drift and rotation never walk an edge into view.
+
+     Two layers, not one. A single layer can only slide: the hues keep their
+     relative positions, so nothing actually changes colour. Two layers drifting
+     in different directions on different periods keep re-mixing where they
+     overlap, which is what reads as the colour shifting rather than the picture
+     merely moving. */
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -30%;
+    z-index: -1;
+    pointer-events: none;
+    /* Soft stops on a flat background band on 8-bit displays. The blur is
+       rasterised once per layer, not once per frame, because only transform and
+       opacity animate — both of which the compositor handles without repainting. */
+    filter: blur(22px);
+  }
+  body::before {
+    background:
+      radial-gradient(40% 46% at 22% 24%, var(--wash-a) 0%, transparent 62%),
+      radial-gradient(36% 42% at 78% 30%, var(--wash-b) 0%, transparent 64%),
+      radial-gradient(48% 40% at 54% 86%, var(--wash-c) 0%, transparent 60%);
+    animation: drift-a 54s ease-in-out infinite alternate;
+  }
+  body::after {
+    background:
+      radial-gradient(44% 38% at 68% 70%, var(--wash-d) 0%, transparent 62%),
+      radial-gradient(38% 44% at 16% 66%, var(--wash-b) 0%, transparent 66%),
+      radial-gradient(34% 36% at 88% 12%, var(--wash-c) 0%, transparent 58%);
+    /* Two animations on different clocks: the drift moves it, the breath changes
+       how much of it shows. Because the periods share no common factor, the two
+       layers land in a combination they have not been in before for hours. */
+    animation: drift-b 73s ease-in-out infinite alternate,
+               breathe 97s ease-in-out infinite alternate;
+  }
+  /* Transform and opacity only — animating background-position would repaint a
+     full-screen layer every frame, whereas these two the compositor handles on
+     its own.
+
+     Travel is deliberately large. Measured against the earlier, timider version:
+     a probe point only moved 4-6 levels out of 255 across a full cycle, which is
+     below the threshold for noticing a change spread over a minute. The point of
+     a moving background is that it moves; too subtle is the same as absent, but
+     still costs a compositor layer. */
+  @keyframes drift-a {
+    from { transform: translate3d(-8%, -5%, 0) scale(1); }
+    to   { transform: translate3d(8%, 6%, 0) scale(1.18); }
+  }
+  @keyframes drift-b {
+    from { transform: translate3d(10%, 6%, 0) scale(1.14) rotate(0deg); }
+    to   { transform: translate3d(-9%, -7%, 0) scale(1) rotate(22deg); }
+  }
+  @keyframes breathe {
+    from { opacity: 0.25; }
+    to   { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body::before,
+    body::after { animation: none; }
+    body::after { opacity: 0.8; }
+  }
   body {
     background: var(--bg);
     color: var(--ink);
@@ -120,15 +207,25 @@
     border-top: 1px solid var(--rule);
   }
   li:last-child { border-bottom: 1px solid var(--rule); }
-  li a { flex: 0 0 9rem; }
-  li span { color: var(--ink-dim); }
+  /* Icon and name travel together as one column, so the row still collapses to
+     two stacked lines on a narrow screen instead of three. */
+  li .head { flex: 0 0 9rem; display: inline-flex; align-items: center; gap: 0.55rem; }
+  li .desc { color: var(--ink-dim); }
+  /* Width and height are on the element as well as here: the attributes reserve
+     the space before the image loads, which stops the list jumping.
+     `alt=""` throughout — the link text already names the site, so announcing
+     the icon would just make a screen reader say everything twice. */
+  .ico {
+    width: 18px; height: 18px; flex: none;
+    border-radius: 4px;
+  }
   a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
   a:hover, a:focus-visible { border-bottom-color: var(--accent); color: var(--accent); outline: none; }
   .contact a { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.95rem; }
   .contact { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: 0; }
   @media (max-width: 26rem) {
     li { flex-direction: column; gap: 0.15rem; }
-    li a { flex-basis: auto; }
+    li .head { flex-basis: auto; }
   }
 </style>
 </head>
@@ -139,17 +236,19 @@
 
   <h2>Projects</h2>
   <ul>
-    <li><a href="https://sqlanvil.com">SQLAnvil</a><span>SQL workflow engine for BigQuery, Postgres, Supabase, and MySQL</span></li>
-    <li><a href="https://incise.dev">Incise</a><span>Native macOS editor for CSV, text, and code</span></li>
-    <li><a href="https://checklists.io">Checklists.io</a><span>Runbooks that AI agents execute and humans approve</span></li>
-    <li><a href="https://listanvil.com">ListAnvil</a><span>Cross-marketplace listing for resellers</span></li>
-    <li><a href="https://graver.dev">Graver</a><span>macOS workbench for Looker and BigQuery/Dataform</span></li>
-    <li><a href="https://github.com/ihistand/claude-skills">Claude Skills</a><span>Discipline-enforcing agent skills for Dataform and BigQuery</span></li>
+    <li><span class="head"><img class="ico" src="/icons/sqlanvil.svg" alt="" width="18" height="18"><a href="https://sqlanvil.com">SQLAnvil</a></span><span class="desc">SQL workflow engine for BigQuery, Postgres, Supabase, and MySQL</span></li>
+    <li><span class="head"><img class="ico" src="/icons/incise.png" alt="" width="18" height="18"><a href="https://incise.dev">Incise</a></span><span class="desc">Native macOS editor for CSV, text, and code</span></li>
+    <li><span class="head"><img class="ico" src="/icons/checklists.png" alt="" width="18" height="18"><a href="https://checklists.io">Checklists.io</a></span><span class="desc">Runbooks that AI agents execute and humans approve</span></li>
+    <li><span class="head"><img class="ico" src="/icons/listanvil.png" alt="" width="18" height="18"><a href="https://listanvil.com">ListAnvil</a></span><span class="desc">Cross-marketplace listing for resellers</span></li>
+    <li><span class="head"><img class="ico" src="/icons/graver.png" alt="" width="18" height="18"><a href="https://graver.dev">Graver</a></span><span class="desc">macOS workbench for Looker and BigQuery/Dataform</span></li>
+    <li><span class="head"><img class="ico" src="/icons/claude-skills.png" alt="" width="18" height="18"><a href="https://github.com/ihistand/claude-skills">Claude Skills</a></span><span class="desc">Discipline-enforcing agent skills for Dataform and BigQuery</span></li>
+    <li><span class="head"><img class="ico" src="/icons/acuantia.png" alt="" width="18" height="18"><a href="https://acuantia.com">Acuantia</a></span><span class="desc">Where I work</span></li>
   </ul>
 
   <h2>Contact</h2>
   <p class="contact">
     <a href="mailto:ivan@histand.net">ivan@histand.net</a>
+    <a href="mailto:ihistand@acuantia.com">ihistand@acuantia.com</a>
     <a href="https://github.com/ihistand">github.com/ihistand</a>
   </p>
 </main>
