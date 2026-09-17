@@ -2,6 +2,17 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/ivan",
+      "has": [
+        {
+          "type": "host",
+          "value": "histand.net"
+        }
+      ],
+      "destination": "https://ivan.histand.net/",
+      "permanent": true
+    },
+    {
       "source": "/:path(.*)",
       "has": [
         {
@@ -187,6 +198,18 @@
       ],
       "destination": "https://histand.net/:path",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "ivan.histand.net"
+        }
+      ],
+      "destination": "/ivan"
     }
   ]
 }

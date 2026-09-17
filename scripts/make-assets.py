@@ -14,7 +14,8 @@ Outputs, all at the repo root because that is what the platforms request:
                        baking in rounded corners double-rounds it)
   icon-192.png         manifest
   icon-512.png         manifest, and the maskable-ish source
-  og.png               1200x630 link preview
+  og.png               1200x630 link preview for ivan.histand.net
+  og-family.png        1200x630 link preview for histand.net
 """
 from PIL import Image, ImageDraw, ImageFont
 from pathlib import Path
@@ -96,13 +97,45 @@ def write_og() -> None:
     draw.text((96, 480), "for the people who do it.", font=font(SERIF, 40), fill=DIM)
 
     draw.rectangle([96, 566, 96 + 132, 570], fill=GOLD)
-    draw.text((96 + 164, 552), "histand.net", font=font(SERIF, 30), fill=GOLD)
+    draw.text((96 + 164, 552), "ivan.histand.net", font=font(SERIF, 30), fill=GOLD)
 
     img.save(ROOT / "og.png")
-    print(f"  og.png               {W}x{H}")
+    print(f"  og.png               {W}x{H} (ivan.histand.net)")
+
+
+def write_og_family() -> None:
+    """1200x630 link preview for the family page at the apex.
+
+    Same furniture as the personal card so the two read as one site; only the
+    name and the strapline change. The personal card can't be reused here — it
+    says "Ivan Histand" and names his work, which is not what this page is.
+    """
+    W, H = 1200, 630
+    img = Image.new("RGB", (W, H), NAVY)
+    draw = ImageDraw.Draw(img)
+
+    m = mark(132, radius_ratio=0.22)
+    img.paste(m, (96, 96), m)
+
+    draw.text((96, 300), "Histand", font=font(SERIF_BOLD, 96), fill=CREAM)
+    draw.text((96, 424), "A Mennonite family name in", font=font(SERIF, 40), fill=DIM)
+    draw.text((96, 480), "Doylestown, Bucks County, PA", font=font(SERIF, 40), fill=DIM)
+
+    draw.rectangle([96, 566, 96 + 132, 570], fill=GOLD)
+    draw.text((96 + 164, 552), "histand.net", font=font(SERIF, 30), fill=GOLD)
+
+    # Nothing should run into the right edge at any size.
+    for text, size in (("Histand", 96), ("A Mennonite family name in", 40),
+                       ("Doylestown, Bucks County, PA", 40)):
+        w = draw.textbbox((96, 0), text, font=font(SERIF_BOLD if size == 96 else SERIF, size))[2]
+        assert w < W - 96, f"{text!r} overflows ({w}px)"
+
+    img.save(ROOT / "og-family.png")
+    print(f"  og-family.png        {W}x{H} (histand.net)")
 
 
 if __name__ == "__main__":
     write_icons()
     write_og()
+    write_og_family()
     print("done — rerun after any brand colour change")
