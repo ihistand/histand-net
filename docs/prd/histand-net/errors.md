@@ -43,6 +43,7 @@ Recurrence of: -
 ### E-003 The manifest linked from the family page is named "Ivan Histand"
 Detected: 2026-11-16, adoption extract of site (site.webmanifest:2 @6d67871)
 Classification: code bug
+Confirmed: 2026-11-16, "Confirm the class (form)"
 Touches: FR-009
 Diagnosis: `site.webmanifest` gives `"name": "Ivan Histand"` with `start_url` `/`. The family page
   links it (family.html:37), and on `histand.net` `/` is now the family page, whose sibling
