@@ -1,3 +1,4 @@
 {
-  "service": "prd-toolkit"
+  "service": "prd-toolkit",
+  "static-site": "prdanvil-packs@prdanvil-packs"
 }

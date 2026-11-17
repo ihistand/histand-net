@@ -1,0 +1,22 @@
+# Custom contract type `hosting` (prd.md section 7): the rules of how the host serves the site.
+# Shape: scripts/prd/validate_hosting.py. One top-level key per rule:
+#   <name>: {rule: clean-urls | redirect | not-deployed | crawl, config, ...the rule's own keys}
+clean-urls:
+  rule: clean-urls
+  config: vercel.json
+  enabled: true
+www-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.prdanvil.com
+  permanent: true
+  keeps-path: true
+sources-not-deployed:
+  rule: not-deployed
+  config: .vercelignore
+  paths: [docs/, scripts/, README.md, tests/]   # tests/: AC-008.2, the owner's correction of 2026-11-16, in .vercelignore since the fix of E-004
+crawl-all:
+  rule: crawl
+  config: robots.txt
+  user-agent: "*"
+  allow: [/]

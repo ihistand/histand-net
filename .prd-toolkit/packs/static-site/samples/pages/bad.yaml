@@ -1,0 +1,36 @@
+# Custom contract type `pages` (prd.md section 7): the pages the site serves and what each must hold.
+# Shape: scripts/prd/validate_pages.py. One top-level key per page:
+#   <name>: {url, file, title, canonical, source?, generator?, links?, holds?}
+home:
+  url: /
+  file: index.html
+  title: "PRDAnvil: the PRD your agents build from"
+  links: [/, /design, /guide, /styles.css, /favicon.svg, "https://github.com/PRDAnvil", "https://histand.net"]
+  holds:
+    - "A Coming soon badge and the headline The PRD your agents build from."
+    - "Three points: Requirements first, Tested blind, Traced to production"
+    - "The three commands that install prd-toolkit and start a PRD"
+design:
+  url: /design
+  file: design.html
+  title: "prd-toolkit design · PRDAnvil"
+  canonical: "https://prdanvil.com/design"
+  source: docs/design.md
+  generator: scripts/render.py
+  links: [/, /design, /guide, /styles.css, /favicon.svg, "https://github.com/PRDAnvil/prd-toolkit", "https://github.com/PRDAnvil", "https://histand.net"]
+  holds:
+    - "The prd-toolkit release it describes, 0.8.11"
+    - "An On this page list of its h2 headings"
+    - "No private marker"
+guide:
+  url: /guide
+  file: guide.html
+  title: "prd-toolkit guide · PRDAnvil"
+  canonical: "https://prdanvil.com/guide"
+  source: docs/guide.md
+  generator: scripts/render.py
+  links: [/, /design, /guide, /styles.css, /favicon.svg, "https://github.com/PRDAnvil/prd-toolkit", "https://github.com/PRDAnvil", "https://histand.net"]
+  holds:
+    - "The prd-toolkit release its commands belong to, 0.8.11"
+    - "An On this page list of its h2 headings"
+    - "No private marker"

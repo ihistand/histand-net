@@ -1,6 +1,6 @@
 ---
 prd: histand-net
-version: 1.0.0
+version: 1.0.1
 status: Approved
 owner: Ivan Histand
 updated: 2026-11-17
@@ -28,6 +28,7 @@ updated: 2026-11-17
 - Not applicable: `contracts/data-classification.yaml` — the site stores no data
 - Not applicable: `contracts/dependencies/` — the site calls no external service
 - Not applicable: `contracts/fixtures/` — tests read the committed pages and configuration, not test data
+- Pack: static-site 0.1.0 (prdanvil-packs@prdanvil-packs)
 
 ## 2. Summary & goals
 
@@ -96,8 +97,8 @@ Decisions: `recommended` for each row, none `required`: the owner decided the fo
 | Type | Files (glob) | Validator |
 |---|---|---|
 | errors | `contracts/errors.yaml` | built-in |
-| pages | `contracts/pages.yaml` | `uv run --quiet --script ../../../scripts/prd/validate_pages.py` |
-| hosting | `contracts/hosting.yaml` | `uv run --quiet --script ../../../scripts/prd/validate_hosting.py` |
+| pages | `contracts/pages.yaml` | pack |
+| hosting | `contracts/hosting.yaml` | pack |
 
 `pages` and `hosting` are custom types. Each validator is a script in this repository's
 `scripts/prd/`, run by lint from this PRD folder with the type's files appended; it reads only those
@@ -185,3 +186,4 @@ None.
 |---|---|---|---|
 | 0.1.0 | 2026-11-16 | Draft started | none |
 | 1.0.0 | 2026-11-17 | Approved; site area adopted; suite T-001.1 pass, T-001.2 pass, T-001.3 known-failing E-005, T-002.1 pass, T-002.2 pass, T-002.3 known-failing E-005, T-003.1 pass, T-003.2 pass, T-004.1 pass, T-004.2 pass, T-004.3 pass, T-005.1 pass, T-005.2 pass, T-005.3 known-failing E-001, T-006.1 pass, T-006.2 pass, T-006.3 pass, T-007.1 pass, T-007.2 pass, T-008.1 pass, T-008.2 pass, T-009.1 pass, T-009.2 pass, T-010.1 pass, T-010.2 known-failing E-006, T-010.3 known-failing E-006, T-011.1 pass, T-012.1 pass, T-012.2 pass, T-013.1 pass, T-014.1 pass, T-014.2 pass, T-014.3 pass, T-015.1 pass, T-016.1 pass, T-016.2 pass, T-017.1 pass, T-017.2 pass, T-017.3 known-failing E-004, T-017.4 known-failing E-004, T-018.1 pass, T-018.2 pass, T-018.3 pass, T-018.4 pass, T-018.5 pass, T-019.1 pass, T-019.2 pass, T-019.3 pass, T-020.1 pass, T-020.2 pass, T-020.3 pass, T-020.4 pass, T-021.1 pass, T-021.2 pass, T-022.1 pass, T-022.2 pass, T-022.3 pass, T-022.4 pass; dry run T-002.2, T-020.1, T-010.2, T-011.1, T-005.3, 0 open questions | UJ-01, UJ-02, FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, FR-008, FR-009, FR-010, FR-011, FR-012, FR-013, FR-014, FR-015, FR-016, FR-017, FR-018, FR-019, FR-020, FR-021, FR-022 |
+| 1.0.1 | 2026-11-17 | pack static-site 0.1.0 lifted; no dry run (pack lifted) | - |

@@ -6,7 +6,7 @@ step with its code. Code implements its PRD; a change in behaviour starts in the
 
 | PRD | Version | Status | Covers |
 |---|---|---|---|
-| [histand-net](histand-net/) | 1.0.0 | Approved | histand.net is a static site of two pages: a page about the Histand family name at `https://histand.net/`, and Ivan Histand's name card at `https://ivan.histand.net/`. |
+| [histand-net](histand-net/) | 1.0.1 | Approved | histand.net is a static site of two pages: a page about the Histand family name at `https://histand.net/`, and Ivan Histand's name card at `https://ivan.histand.net/`. |
 
 ## How it works
 

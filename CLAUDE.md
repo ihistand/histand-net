@@ -1,7 +1,7 @@
 <!-- prd-toolkit:start -->
 ## Product requirements (by prd_block.py; do not edit)
 
-The PRD at `docs/prd/histand-net` (version 1.0.0) is the authority.
+The PRD at `docs/prd/histand-net` (version 1.0.1) is the authority.
 
 - To learn what an area does, run `/prd-toolkit:prd-context <area>` and work from its pack; read
   whole PRD files only to edit them. Build an approved change with
