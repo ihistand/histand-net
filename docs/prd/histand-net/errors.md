@@ -20,7 +20,9 @@ Diagnosis: the redirect of `/ivan` (vercel.json:10-18) holds only on the host `h
   `https://ivan.histand.net/ivan.html` answers 308 to it. Commit d7cfb18 says "histand.net/ivan
   redirects to the subdomain so the page has one URL"; on `ivan.histand.net` the page has two,
   `/` and `/ivan`. The page's canonical address limits the harm for search engines.
-Resolution: open
+Resolution: open, intended: a request for `/ivan` on `ivan.histand.net` is redirected to
+  `https://ivan.histand.net/` (the owner, 2026-11-16: "ivan.histand.net/ivan should redirect to
+  ivan.histand.net"; AC-005.3)
 Recurrence of: -
 
 ### E-002 Alias-domain redirects answer 308 where the README says 301
@@ -37,7 +39,8 @@ Diagnosis: every alias rule of `vercel.json` (lines 20-206) sets `"permanent": t
   to `https://histand.net/`", and the workspace notes beside this repository say the same. No
   commit message names 308. Both statuses are permanent; which one the site promises is the
   owner's to say.
-Resolution: open
+Resolution: not a defect: the owner confirmed 2026-11-16, in the chat, that the 308 is intended ("308 is
+  correct."); the README's "301" is what is wrong, and AC-001.3 corrects it (Q-04)
 Recurrence of: -
 
 ### E-003 The manifest linked from the family page is named "Ivan Histand"
@@ -50,7 +53,8 @@ Diagnosis: `site.webmanifest` gives `"name": "Ivan Histand"` with `start_url` `/
   metadata names the site "Histand" (`og:site_name`, family.html:15). Commit d7cfb18 says the
   apex "needed its own share image — the card's says 'Ivan Histand'". The manifest has not changed
   since b07d475 (2026-08-22), when the site was the name card alone.
-Resolution: open
+Resolution: not a defect: the owner confirmed 2026-11-16, in the chat, that the manifest's name and
+  the family page's link to it are intended ("Keep as is."; AC-009.1)
 Recurrence of: -
 
 ### E-004 The name card's Person schema claims topics the page does not show
@@ -63,7 +67,10 @@ Diagnosis: the comment above the JSON-LD (ivan.html:40-45) says "Every claim her
   list (ivan.html:67-74) holds "PostgreSQL" and "Developer tools"; the page's visible text says
   "Postgres" and nowhere "Developer tools". The same comment says the title and employer are
   there "because the Projects list states them"; since b408abb they are in the Work list.
-Resolution: open
+Resolution: open, intended: the name card's visible text says "PostgreSQL" where it says
+  "Postgres", and "Developer tools" is dropped from the Person's `knowsAbout` (the owner,
+  2026-11-16: "Postgres should be changed to PostgreSQL" and "Drop Developer Tools"; AC-017.3,
+  AC-017.4)
 Recurrence of: -
 
 ### E-005 The README describes a single page, index.html, and a 301
