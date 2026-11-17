@@ -1,0 +1,168 @@
+# Custom contract type `hosting` (prd.md section 7): the rules of how the host serves the site.
+# Shape: scripts/prd/validate_hosting.py. One top-level key per rule:
+#   <name>: {rule: clean-urls | redirect | rewrite | not-deployed | crawl, config, ...the rule's own keys}
+# No not-deployed rule yet: FR-010 (AC-010.2, AC-010.3) asks for a .vercelignore that leaves out the files
+# that are not the site, and the validator needs that config file to exist, so the rule is written when it is.
+clean-urls:
+  rule: clean-urls
+  config: vercel.json
+  enabled: true
+family-to-root:
+  rule: redirect
+  config: vercel.json
+  from-path: /family
+  to: /
+  permanent: true
+  keeps-path: false
+ivan-to-subdomain:
+  rule: redirect
+  config: vercel.json
+  from-host: histand.net
+  from-path: /ivan
+  to: "https://ivan.histand.net/"
+  permanent: true
+  keeps-path: false
+ivan-on-subdomain-to-root:   # FR-005 AC-005.3; not in vercel.json yet (E-001, open)
+  rule: redirect
+  config: vercel.json
+  from-host: ivan.histand.net
+  from-path: /ivan
+  to: "https://ivan.histand.net/"
+  permanent: true
+  keeps-path: false
+www-histand-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.histand.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+histand-com-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: histand.com
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+www-histand-com-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.histand.com
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+histand-org-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: histand.org
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+www-histand-org-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.histand.org
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+histands-com-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: histands.com
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+www-histands-com-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.histands.com
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+histands-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: histands.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+www-histands-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.histands.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+histands-org-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: histands.org
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+www-histands-org-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.histands.org
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+anilak-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: anilak.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+www-anilak-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.anilak.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+hinault-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: hinault.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+www-hinault-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.hinault.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+ivanivan-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: ivanivan.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+www-ivanivan-net-to-apex:
+  rule: redirect
+  config: vercel.json
+  from-host: www.ivanivan.net
+  to: "https://histand.net/"
+  permanent: true
+  keeps-path: true
+root-on-ivan-host:
+  rule: rewrite
+  config: vercel.json
+  host: ivan.histand.net
+  path: /
+  serves: /ivan
+root-elsewhere:
+  rule: rewrite
+  config: vercel.json
+  path: /
+  serves: /family   # every host but ivan.histand.net; vercel.json lists it after root-on-ivan-host
+crawl-all:
+  rule: crawl
+  config: robots.txt
+  user-agent: "*"
+  allow: [/]
+  sitemap: "https://histand.net/sitemap.xml"

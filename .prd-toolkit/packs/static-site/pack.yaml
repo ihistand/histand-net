@@ -1,0 +1,28 @@
+pack: 'static-site'
+version: '0.1.0'
+toolkit: '>=0.8.0,<0.9'
+description: 'Static sites: the pages a site serves and the rules its host serves them by.'
+contract-types:
+  - {type: 'pages', files: 'contracts/pages.yaml', validator: 'uv run --quiet --script ${PACK}/validate_pages.py'}
+  - {type: 'hosting', files: 'contracts/hosting.yaml', validator: 'uv run --quiet --script ${PACK}/validate_hosting.py'}
+target-kinds: {'pages': 'pages', 'hosting': 'hosting'}
+levels:
+  - {level: 'integration', command: 'uv run --with pytest==8.3.4 --with pyyaml==6.0.2 pytest -p no:cacheprovider tests/integration --tb=short', environment: 'local', gate: 'build'}
+  - {level: 'smoke', command: 'uv run --with pytest==8.3.4 --with pyyaml==6.0.2 pytest -p no:cacheprovider tests/smoke --tb=short', environment: 'production', gate: 'deploy'}
+harness:
+  'Lifecycle': 'Nothing is started: `local` tests read the repository''s committed files, and production is always served by Vercel. Every level runs from the repository root.'
+  'Environment switch': 'The level fixes the environment: `tests/integration` runs on `local`, `tests/smoke` on `production`. No variable is read.'
+  'Database access': 'Not applicable: the site has no database.'
+  'Persistent environments': 'Production keeps its state: smoke tests only send GET and HEAD requests, and never deploy or change anything.'
+  'Layout': '`tests/<level>/test_<area>.py`, where the area is the feature file''s name (`site`); each test''s docstring cites its T-id, e.g. `@prd T-001.1`. Test roots: `tests/`'
+  'Fixtures': 'Not applicable: tests read the committed files; there is no test data to load.'
+  'Browser identity': 'Not applicable: pages are checked as HTML text, not in a browser.'
+  'Leaks': 'The site holds no classified data, so a leak check has nothing to scan; the Levels commands carry `--tb=short`, so a failure report prints no full tracebacks of test values.'
+  'Acceptance': 'Not applicable: the PRD has no acceptance level.'
+skills:
+  - {activity: 'plans', skill: 'superpowers:writing-plans'}
+  - {activity: 'reviewing a change before merge', skill: 'code-review'}
+  - {activity: 'checking a change works before calling it done', skill: 'superpowers:verification-before-completion'}
+  - {activity: 'work on the pages'' HTML and CSS', skill: 'frontend-design:frontend-design'}
+vocabulary: []
+builder-tests: none

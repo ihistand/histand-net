@@ -1,3 +1,6 @@
 .vercel
 .DS_Store
 .env*
+__pycache__/
+.prd-judge/
+.prd-review.json

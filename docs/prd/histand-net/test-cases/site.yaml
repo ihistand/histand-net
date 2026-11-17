@@ -1,0 +1,1078 @@
+# Format: references/prd-format.md, "Test cases". One entry per T-id.
+T-001.1:
+  ac: AC-001.1
+  level: smoke
+  target: pages:family
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "GET https://histand.net/", redirects: not followed}
+  expect:
+    output: {status: 200, content-type: "text/html; charset=utf-8", title: "Histand — a family name in Doylestown, Bucks County"}
+    effects: []
+    errors: []
+    leaks: none
+T-001.2:
+  ac: AC-001.2
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {checkout: the repository root}
+  expect:
+    output: {files-exist: [family.html], files-absent: [index.html]}
+    effects: []
+    errors: []
+    leaks: none
+T-001.3:
+  ac: AC-001.3
+  level: integration
+  known-failing: E-005
+  symptom: "README.md names no family.html, and still says Single-page, index.html and 301"
+  target: code:README.md
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [README.md]}
+  expect:
+    output:
+      text-holds: [family.html, "https://histand.net/", "308"]
+      text-holds-none-of: [index.html, Single-page, "301"]
+    effects: []
+    errors: []
+    leaks: none
+T-002.1:
+  ac: AC-002.1
+  level: smoke
+  target: pages:ivan
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "GET https://ivan.histand.net/", redirects: not followed}
+  expect:
+    output: {status: 200, content-type: "text/html; charset=utf-8", title: "Ivan Histand"}
+    effects: []
+    errors: []
+    leaks: none
+T-002.2:
+  ac: AC-002.2
+  level: integration
+  target: hosting:root-on-ivan-host
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [vercel.json]}
+  expect:
+    output:
+      json:
+        rewrites:
+          - {source: /, has: [{type: host, value: ivan.histand.net}], destination: /ivan}
+          - {source: /, destination: /family}
+    effects: []
+    errors: []
+    leaks: none
+T-002.3:
+  ac: AC-002.3
+  level: integration
+  known-failing: E-005
+  symptom: "README.md holds neither ivan.html nor https://ivan.histand.net/"
+  target: code:README.md
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [README.md]}
+  expect:
+    output:
+      text-holds: [ivan.html, "https://ivan.histand.net/"]
+    effects: []
+    errors: []
+    leaks: none
+T-003.1:
+  ac: AC-003.1
+  level: smoke
+  target: hosting:clean-urls
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "HEAD https://histand.net/family.html", redirects: not followed}
+  expect:
+    output: {status: 308, location: /family}
+    effects: []
+    errors: []
+    leaks: none
+T-003.2:
+  ac: AC-003.2
+  level: integration
+  target: hosting:clean-urls
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [vercel.json]}
+  expect:
+    output: {json: {cleanUrls: true}}
+    effects: []
+    errors: []
+    leaks: none
+T-004.1:
+  ac: AC-004.1
+  level: smoke
+  target: hosting:family-to-root
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "HEAD https://histand.net/family", redirects: not followed}
+  expect:
+    output: {status: 308, location: /}
+    effects: []
+    errors: []
+    leaks: none
+T-004.2:
+  ac: AC-004.2
+  level: integration
+  target: hosting:family-to-root
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [vercel.json]}
+  expect:
+    output:
+      json-redirects-include:
+        - {source: /family, destination: /, permanent: true}
+    effects: []
+    errors: []
+    leaks: none
+T-004.3:
+  ac: AC-004.3
+  level: smoke
+  target: hosting:family-to-root
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "HEAD https://ivan.histand.net/family", redirects: not followed}
+  expect:
+    output: {status: 308, location: /}
+    effects: []
+    errors: []
+    leaks: none
+T-005.1:
+  ac: AC-005.1
+  level: smoke
+  target: hosting:ivan-to-subdomain
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "HEAD https://histand.net/ivan", redirects: not followed}
+  expect:
+    output: {status: 308, location: "https://ivan.histand.net/"}
+    effects: []
+    errors: []
+    leaks: none
+T-005.2:
+  ac: AC-005.2
+  level: integration
+  target: hosting:ivan-to-subdomain
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [vercel.json]}
+  expect:
+    output:
+      json-redirects-include:
+        - {source: /ivan, has: [{type: host, value: histand.net}], destination: "https://ivan.histand.net/", permanent: true}
+    effects: []
+    errors: []
+    leaks: none
+T-005.3:
+  ac: AC-005.3
+  level: smoke
+  known-failing: E-001
+  symptom: "/ivan on ivan.histand.net answers 200 instead of 308"
+  target: hosting:ivan-on-subdomain-to-root
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "HEAD https://ivan.histand.net/ivan", redirects: not followed}
+  expect:
+    output: {status: 308, location: "https://ivan.histand.net/"}
+    effects: []
+    errors: []
+    leaks: none
+T-006.1:
+  ac: AC-006.1
+  level: smoke
+  target: hosting:www-histand-net-to-apex
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input:
+    method: HEAD
+    redirects: not followed
+    urls:
+      - "https://www.histand.net/"
+      - "https://histand.com/"
+      - "https://www.histand.com/"
+      - "https://histand.org/"
+      - "https://www.histand.org/"
+      - "https://histands.com/"
+      - "https://www.histands.com/"
+      - "https://histands.net/"
+      - "https://www.histands.net/"
+      - "https://histands.org/"
+      - "https://www.histands.org/"
+      - "https://anilak.net/"
+      - "https://www.anilak.net/"
+      - "https://hinault.net/"
+      - "https://www.hinault.net/"
+      - "https://ivanivan.net/"
+      - "https://www.ivanivan.net/"
+  expect:
+    output:
+      each: {status: 308, location: "https://histand.net/"}
+    effects: []
+    errors: []
+    leaks: none
+T-006.2:
+  ac: AC-006.1
+  level: smoke
+  target: hosting:histand-com-to-apex
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input:
+    method: HEAD
+    redirects: not followed
+    urls: ["https://histand.com/robots.txt", "https://www.ivanivan.net/a/b", "https://www.histand.net/sitemap.xml", "https://www.ivanivan.net/a/b?x=1"]
+  expect:
+    output:
+      "https://histand.com/robots.txt": {status: 308, location: "https://histand.net/robots.txt"}
+      "https://www.ivanivan.net/a/b": {status: 308, location: "https://histand.net/a/b"}
+      "https://www.histand.net/sitemap.xml": {status: 308, location: "https://histand.net/sitemap.xml"}
+      "https://www.ivanivan.net/a/b?x=1": {status: 308, location: "https://histand.net/a/b?x=1"}
+    effects: []
+    errors: []
+    leaks: none
+T-006.3:
+  ac: AC-006.2
+  level: integration
+  target: hosting:www-histand-net-to-apex
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [vercel.json]}
+  expect:
+    output:
+      json-redirects-count: 19
+      json-redirects-matching:
+        - {source: "/:path(.*)", has: [{type: host, value: www.histand.net}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: histand.com}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: www.histand.com}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: histand.org}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: www.histand.org}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: histands.com}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: www.histands.com}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: histands.net}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: www.histands.net}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: histands.org}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: www.histands.org}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: anilak.net}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: www.anilak.net}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: hinault.net}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: www.hinault.net}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: ivanivan.net}], destination: "https://histand.net/:path", permanent: true}
+        - {source: "/:path(.*)", has: [{type: host, value: www.ivanivan.net}], destination: "https://histand.net/:path", permanent: true}
+    effects: []
+    errors: []
+    leaks: none
+T-007.1:
+  ac: AC-007.1
+  level: smoke
+  target: hosting:crawl-all
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "GET https://histand.net/robots.txt", redirects: not followed}
+  expect:
+    output: {status: 200, content-type: "text/plain; charset=utf-8", body: "User-agent: *\nAllow: /\n\nSitemap: https://histand.net/sitemap.xml\n"}
+    effects: []
+    errors: []
+    leaks: none
+T-007.2:
+  ac: AC-007.2
+  level: integration
+  target: hosting:crawl-all
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [robots.txt]}
+  expect:
+    output: {text: "User-agent: *\nAllow: /\n\nSitemap: https://histand.net/sitemap.xml\n"}
+    effects: []
+    errors: []
+    leaks: none
+T-008.1:
+  ac: AC-008.1
+  level: integration
+  target: hosting:crawl-all
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [sitemap.xml]}
+  expect:
+    output:
+      xml-root: "{http://www.sitemaps.org/schemas/sitemap/0.9}urlset"
+      xml-urls:
+        - {loc: "https://histand.net/", lastmod: "2026-09-17"}
+        - {loc: "https://ivan.histand.net/", lastmod: "2026-09-17"}
+    effects: []
+    errors: []
+    leaks: none
+T-008.2:
+  ac: AC-008.2
+  level: smoke
+  target: hosting:crawl-all
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "GET https://histand.net/sitemap.xml", redirects: not followed}
+  expect:
+    output: {status: 200, content-type: application/xml, body-equals-file: sitemap.xml}
+    effects: []
+    errors: []
+    leaks: none
+T-009.1:
+  ac: AC-009.1
+  level: integration
+  target: code:site.webmanifest
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [site.webmanifest]}
+  expect:
+    output:
+      json:
+        name: Ivan Histand
+        short_name: Histand
+        start_url: /
+        display: browser
+        background_color: "#f5f1ea"
+        theme_color: "#f5f1ea"
+        icons:
+          - {src: /icon-192.png, sizes: 192x192, type: image/png}
+          - {src: /icon-512.png, sizes: 512x512, type: image/png}
+    effects: []
+    errors: []
+    leaks: none
+T-009.2:
+  ac: AC-009.2
+  level: smoke
+  target: code:site.webmanifest
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "GET https://histand.net/site.webmanifest", redirects: not followed}
+  expect:
+    output:
+      status: 200
+      content-type: "application/manifest+json; charset=utf-8"
+      json:
+        name: Ivan Histand
+        short_name: Histand
+        start_url: /
+        display: browser
+        background_color: "#f5f1ea"
+        theme_color: "#f5f1ea"
+        icons:
+          - {src: /icon-192.png, sizes: 192x192, type: image/png}
+          - {src: /icon-512.png, sizes: 512x512, type: image/png}
+    effects: []
+    errors: []
+    leaks: none
+T-010.1:
+  ac: AC-010.1
+  level: integration
+  target: code:.gitignore
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {command: "git check-ignore -q <path>, once per path, run from the repository root"}
+  expect:
+    output:
+      ignored: [.vercel, .vercel/project.json, .DS_Store, icons/.DS_Store, .env, .env.local, .env.production]
+      not-ignored: [family.html, ivan.html, vercel.json, robots.txt, sitemap.xml, site.webmanifest]
+    effects: []
+    errors: []
+    leaks: none
+T-010.2:
+  ac: AC-010.2
+  level: smoke
+  known-failing: E-006
+  symptom: "one or more of the listed URLs answer 200 instead of 404"
+  target: code:.vercelignore
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input:
+    method: HEAD
+    redirects: not followed
+    urls:
+      - "https://histand.net/README.md"
+      - "https://histand.net/scripts/make-assets.py"
+      - "https://histand.net/scripts/fetch-icons.py"
+      - "https://histand.net/scripts/prd/validate_pages.py"
+      - "https://histand.net/docs/prd/histand-net/prd.md"
+      - "https://histand.net/tests/integration/test_site.py"
+  expect:
+    output: {each-status: 404}
+    effects: []
+    errors: []
+    leaks: none
+T-010.3:
+  ac: AC-010.3
+  level: integration
+  known-failing: E-006
+  symptom: "the repository root holds no .vercelignore file"
+  target: code:.vercelignore
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {checkout: the repository root}
+  expect:
+    output: {files-exist: [.vercelignore]}
+    effects: []
+    errors: []
+    leaks: none
+T-011.1:
+  ac: AC-011.1
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      html-lang: en
+      meta-charset: utf-8
+      title: "Histand — a family name in Doylestown, Bucks County"
+      meta:
+        viewport: "width=device-width, initial-scale=1"
+        description: "Histand, also written Hiestand: a Mennonite family name long associated with Doylestown and Bucks County, Pennsylvania."
+        robots: "index, follow"
+      link-canonical: "https://histand.net/"
+    effects: []
+    errors: []
+    leaks: none
+T-012.1:
+  ac: AC-012.1
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      meta:
+        "og:type": website
+        "og:site_name": Histand
+        "og:title": "Histand — a family name in Doylestown, Bucks County"
+        "og:description": "A Mennonite family name long associated with Doylestown and Bucks County, Pennsylvania."
+        "og:url": "https://histand.net/"
+        "og:locale": en_US
+        "og:image": "https://histand.net/og-family.png"
+        "og:image:width": "1200"
+        "og:image:height": "630"
+        "og:image:alt": "Histand — a Mennonite family name in Doylestown, Bucks County, PA"
+        "twitter:card": summary_large_image
+        "twitter:title": "Histand — a family name in Doylestown, Bucks County"
+        "twitter:description": "A Mennonite family name long associated with Doylestown and Bucks County, Pennsylvania."
+        "twitter:image": "https://histand.net/og-family.png"
+    effects: []
+    errors: []
+    leaks: none
+T-012.2:
+  ac: AC-012.2
+  level: smoke
+  target: pages:family
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "HEAD https://histand.net/og-family.png", redirects: not followed}
+  expect:
+    output: {status: 200, content-type: image/png}
+    effects: []
+    errors: []
+    leaks: none
+T-013.1:
+  ac: AC-013.1
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      json-ld:
+        "@context": "https://schema.org"
+        "@type": WebPage
+        name: "Histand — a family name in Doylestown, Bucks County"
+        url: "https://histand.net/"
+        description: "Histand, also written Hiestand: a Mennonite family name long associated with Doylestown and Bucks County, Pennsylvania."
+        inLanguage: en-US
+        about: {"@type": Thing, name: Histand family, description: "A Mennonite family of Doylestown Township, Bucks County, Pennsylvania"}
+    effects: []
+    errors: []
+    leaks: none
+T-014.1:
+  ac: AC-014.1
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      h1-texts: [Histand]
+      h2-texts: [Coming to Doylestown, Places, "William L. Histand, photographer", Sources, This site]
+    effects: []
+    errors: []
+    leaks: none
+T-014.2:
+  ac: AC-014.2
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      list-after-h2:
+        h2: Sources
+        items:
+          - {link: {text: Mennonite Heritage Center, href: "https://mhep.org/new-acquisition-joshua-histand-and-enos-gehman-papers/"}, desc-not-empty: true}
+          - {link: {text: Mennonite Heritage Center, href: "https://mhep.org/from-sandy-ridge-and-pine-run-to-main-street-and-cross-keys-the-photography-of-william-histand-of-doylestown/"}, desc-not-empty: true}
+          - {link: {text: Bucks County Herald, href: "https://www.buckscountyherald.com/opinion/history-lives-samuel-and-rebecca-histand-house/article_4d711655-2aba-5eb9-9053-f5d3143ebf7c.html"}, desc-not-empty: true}
+    effects: []
+    errors: []
+    leaks: none
+T-014.3:
+  ac: AC-014.3
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      paragraph-after-h2:
+        h2: This site
+        links: [{text: ivan.histand.net, href: "https://ivan.histand.net/"}]
+    effects: []
+    errors: []
+    leaks: none
+T-015.1:
+  ac: AC-015.1
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      html-lang: en
+      meta-charset: utf-8
+      title: Ivan Histand
+      meta:
+        viewport: "width=device-width, initial-scale=1"
+        description: "Ivan Histand — software I build and how to reach me."
+        author: Ivan Histand
+        robots: "index, follow"
+      link-canonical: "https://ivan.histand.net/"
+    effects: []
+    errors: []
+    leaks: none
+T-016.1:
+  ac: AC-016.1
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      meta:
+        "og:type": website
+        "og:site_name": Ivan Histand
+        "og:title": Ivan Histand
+        "og:description": "Software I build and how to reach me."
+        "og:url": "https://ivan.histand.net/"
+        "og:locale": en_US
+        "og:image": "https://ivan.histand.net/og.png"
+        "og:image:width": "1200"
+        "og:image:height": "630"
+        "og:image:alt": "Ivan Histand — data engineering, and tools for the people who do it."
+        "twitter:card": summary_large_image
+        "twitter:title": Ivan Histand
+        "twitter:description": "Software I build and how to reach me."
+        "twitter:image": "https://ivan.histand.net/og.png"
+    effects: []
+    errors: []
+    leaks: none
+T-016.2:
+  ac: AC-016.2
+  level: smoke
+  target: pages:ivan
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {request: "HEAD https://ivan.histand.net/og.png", redirects: not followed}
+  expect:
+    output: {status: 200, content-type: image/png}
+    effects: []
+    errors: []
+    leaks: none
+T-017.1:
+  ac: AC-017.1
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      json-ld:
+        "@context": "https://schema.org"
+        "@type": Person
+        name: Ivan Histand
+        url: "https://ivan.histand.net/"
+        email: "mailto:ivan@histand.net"
+        description: "Data engineering, and tools for the people who do it."
+        worksFor:
+          "@type": Organization
+          url: "https://acuantia.com"
+          parentOrganization: {"@type": Organization, url: "https://rotoplas.com"}
+        sameAs: ["https://github.com/ihistand"]
+    effects: []
+    errors: []
+    leaks: none
+T-017.2:
+  ac: AC-017.2
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      json-ld-values-in-body-text: [jobTitle, worksFor.name, worksFor.parentOrganization.name, email]
+    effects: []
+    errors: []
+    leaks: none
+T-017.3:
+  ac: AC-017.3
+  level: integration
+  known-failing: E-004
+  symptom: "knowsAbout also holds \"Developer tools\""
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      json-ld:
+        knowsAbout: [Data engineering, SQL, BigQuery, Dataform, PostgreSQL]
+    effects: []
+    errors: []
+    leaks: none
+T-017.4:
+  ac: AC-017.4
+  level: integration
+  known-failing: E-004
+  symptom: "the visible text holds \"Postgres\" as a word of its own"
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      body-text-holds: [PostgreSQL]
+      body-text-words-none-of: [Postgres]
+    effects: []
+    errors: []
+    leaks: none
+T-018.1:
+  ac: AC-018.1
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      h1-texts: [Ivan Histand]
+      lede: "Data engineering, and tools for the people who do it."
+      h2-texts: [Projects, Work, Elsewhere, Contact]
+    effects: []
+    errors: []
+    leaks: none
+T-018.2:
+  ac: AC-018.2
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      list-after-h2:
+        h2: Projects
+        every-icon: {alt: "", width: "18", height: "18"}
+        items:
+          - {icon: /icons/sqlanvil.svg, link: {text: SQLAnvil, href: "https://sqlanvil.com"}, desc-not-empty: true}
+          - {icon: /icons/incise.png, link: {text: Incise, href: "https://incise.dev"}, desc-not-empty: true}
+          - {icon: /icons/checklists.png, link: {text: Checklists.io, href: "https://checklists.io"}, desc-not-empty: true}
+          - {icon: /icons/listanvil.png, link: {text: ListAnvil, href: "https://listanvil.com"}, desc-not-empty: true}
+          - {icon: /icons/graver.png, link: {text: Graver, href: "https://graver.dev"}, desc-not-empty: true}
+          - {icon: /icons/claude-skills.png, link: {text: Claude Skills, href: "https://github.com/ihistand/claude-skills"}, desc-not-empty: true}
+    effects: []
+    errors: []
+    leaks: none
+T-018.3:
+  ac: AC-018.3
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      list-after-h2:
+        h2: Work
+        every-icon: {alt: "", width: "18", height: "18"}
+        items:
+          - {icon: /icons/acuantia.png, link: {text: Acuantia, href: "https://acuantia.com"}, desc-not-empty: true}
+          - {icon: /icons/rotoplas.png, link: {text: Rotoplas, href: "https://rotoplas.com"}, desc-not-empty: true}
+    effects: []
+    errors: []
+    leaks: none
+T-018.4:
+  ac: AC-018.4
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      list-after-h2:
+        h2: Elsewhere
+        items:
+          - {icon: none, link: {text: histand.net, href: "https://histand.net/"}, desc-not-empty: true}
+    effects: []
+    errors: []
+    leaks: none
+T-018.5:
+  ac: AC-018.5
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      contact-links:
+        - {text: ivan@histand.net, href: "mailto:ivan@histand.net"}
+        - {text: ihistand@acuantia.com, href: "mailto:ihistand@acuantia.com"}
+        - {text: github.com/ihistand, href: "https://github.com/ihistand"}
+        - {text: linkedin.com/in/ihistand, href: "https://www.linkedin.com/in/ihistand/"}
+    effects: []
+    errors: []
+    leaks: none
+T-019.1:
+  ac: AC-019.1
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      icon-links:
+        - {rel: icon, href: /favicon.ico, sizes: 32x32}
+        - {rel: icon, type: image/svg+xml, href-begins: "data:image/svg+xml,"}
+        - {rel: apple-touch-icon, href: /apple-touch-icon.png}
+        - {rel: manifest, href: /site.webmanifest}
+    effects: []
+    errors: []
+    leaks: none
+T-019.2:
+  ac: AC-019.1
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      icon-links:
+        - {rel: icon, href: /favicon.ico, sizes: 32x32}
+        - {rel: icon, type: image/svg+xml, href-begins: "data:image/svg+xml,"}
+        - {rel: apple-touch-icon, href: /apple-touch-icon.png}
+        - {rel: manifest, href: /site.webmanifest}
+    effects: []
+    errors: []
+    leaks: none
+T-019.3:
+  ac: AC-019.2
+  level: smoke
+  target: pages:ivan
+  environment: production
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input:
+    method: HEAD
+    redirects: not followed
+    urls:
+      - "https://histand.net/favicon.ico"
+      - "https://histand.net/apple-touch-icon.png"
+      - "https://histand.net/site.webmanifest"
+      - "https://ivan.histand.net/favicon.ico"
+      - "https://ivan.histand.net/apple-touch-icon.png"
+      - "https://ivan.histand.net/site.webmanifest"
+  expect:
+    output: {each-status: 200}
+    effects: []
+    errors: []
+    leaks: none
+T-020.1:
+  ac: AC-020.1
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output: {loaded-references-local: true, style-holds-none-of: ["url(", "@import"]}
+    effects: []
+    errors: []
+    leaks: none
+T-020.2:
+  ac: AC-020.1
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output: {loaded-references-local: true, style-holds-none-of: ["url(", "@import"]}
+    effects: []
+    errors: []
+    leaks: none
+T-020.3:
+  ac: AC-020.2
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      script-elements: [{type: application/ld+json, src: none}]
+    effects: []
+    errors: []
+    leaks: none
+T-020.4:
+  ac: AC-020.2
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      script-elements: [{type: application/ld+json, src: none}]
+    effects: []
+    errors: []
+    leaks: none
+T-021.1:
+  ac: AC-021.1
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      meta: {color-scheme: light dark}
+      meta-theme-colors:
+        - {content: "#f5f1ea", media: "(prefers-color-scheme: light)"}
+        - {content: "#15130f", media: "(prefers-color-scheme: dark)"}
+      style-holds:
+        - ":root { --bg: #f5f1ea; --ink: #1c1a16;"
+        - "@media (prefers-color-scheme: dark) { :root { --bg: #15130f; --ink: #ece6da;"
+    effects: []
+    errors: []
+    leaks: none
+T-021.2:
+  ac: AC-021.1
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      meta: {color-scheme: light dark}
+      meta-theme-colors:
+        - {content: "#f5f1ea", media: "(prefers-color-scheme: light)"}
+        - {content: "#15130f", media: "(prefers-color-scheme: dark)"}
+      style-holds:
+        - ":root { --bg: #f5f1ea; --ink: #1c1a16;"
+        - "@media (prefers-color-scheme: dark) { :root { --bg: #15130f; --ink: #ece6da;"
+    effects: []
+    errors: []
+    leaks: none
+T-022.1:
+  ac: AC-022.1
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      style-holds:
+        - "animation: drift-a 54s ease-in-out infinite alternate;"
+        - "animation: drift-b 73s ease-in-out infinite alternate, breathe 97s ease-in-out infinite alternate;"
+    effects: []
+    errors: []
+    leaks: none
+T-022.2:
+  ac: AC-022.1
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      style-holds:
+        - "animation: drift-a 54s ease-in-out infinite alternate;"
+        - "animation: drift-b 73s ease-in-out infinite alternate, breathe 97s ease-in-out infinite alternate;"
+    effects: []
+    errors: []
+    leaks: none
+T-022.3:
+  ac: AC-022.2
+  level: integration
+  target: pages:family
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [family.html]}
+  expect:
+    output:
+      style-holds:
+        - "@media (prefers-reduced-motion: reduce) { body::before, body::after { animation: none; } body::after { opacity: 0.8; } }"
+    effects: []
+    errors: []
+    leaks: none
+T-022.4:
+  ac: AC-022.2
+  level: integration
+  target: pages:ivan
+  environment: local
+  identity: none
+  preconditions: []
+  refs: [testing.md#Harness]
+  input: {files: [ivan.html]}
+  expect:
+    output:
+      style-holds:
+        - "@media (prefers-reduced-motion: reduce) { body::before, body::after { animation: none; } body::after { opacity: 0.8; } }"
+    effects: []
+    errors: []
+    leaks: none

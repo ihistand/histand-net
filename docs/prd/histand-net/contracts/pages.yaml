@@ -1,0 +1,56 @@
+# Custom contract type `pages` (prd.md section 7): the pages the site serves and what each must hold.
+# Shape: scripts/prd/validate_pages.py. One top-level key per page:
+#   <name>: {url, host?, file, title, canonical, source?, generator?, links?, holds?}
+# Both pages answer at `/`, each on its own host, through the rewrites of contracts/hosting.yaml.
+family:
+  url: /
+  host: histand.net
+  file: family.html
+  title: "Histand — a family name in Doylestown, Bucks County"
+  canonical: "https://histand.net/"
+  links:
+    - "https://histand.net/"
+    - /favicon.ico
+    - /apple-touch-icon.png
+    - /site.webmanifest
+    - "https://mhep.org/new-acquisition-joshua-histand-and-enos-gehman-papers/"
+    - "https://mhep.org/from-sandy-ridge-and-pine-run-to-main-street-and-cross-keys-the-photography-of-william-histand-of-doylestown/"
+    - "https://www.buckscountyherald.com/opinion/history-lives-samuel-and-rebecca-histand-house/article_4d711655-2aba-5eb9-9053-f5d3143ebf7c.html"
+    - "https://ivan.histand.net/"
+  holds:
+    - "The h1 Histand, then the h2 headings Coming to Doylestown, Places, William L. Histand, photographer, Sources and This site"
+    - "A Sources list of three linked sources, each with a description"
+    - "A link to the name card at https://ivan.histand.net/"
+    - "A share card of its own, with the image https://histand.net/og-family.png"
+    - "One JSON-LD WebPage whose name, url and description equal the page's title, canonical address and description"
+    - "No script that runs, and nothing loaded from another host"
+ivan:
+  url: /
+  host: ivan.histand.net
+  file: ivan.html
+  title: "Ivan Histand"
+  canonical: "https://ivan.histand.net/"
+  links:
+    - "https://ivan.histand.net/"
+    - /favicon.ico
+    - /apple-touch-icon.png
+    - /site.webmanifest
+    - "https://sqlanvil.com"
+    - "https://incise.dev"
+    - "https://checklists.io"
+    - "https://listanvil.com"
+    - "https://graver.dev"
+    - "https://github.com/ihistand/claude-skills"
+    - "https://acuantia.com"
+    - "https://rotoplas.com"
+    - "https://histand.net/"
+    - "mailto:ivan@histand.net"
+    - "mailto:ihistand@acuantia.com"
+    - "https://github.com/ihistand"
+    - "https://www.linkedin.com/in/ihistand/"
+  holds:
+    - "The h1 Ivan Histand, then the h2 headings Projects, Work, Elsewhere and Contact"
+    - "Six project entries, each with a local 18 by 18 icon, a link and a description"
+    - "A link back to the family page at https://histand.net/"
+    - "One JSON-LD Person whose job title, employer, parent company and email address are also visible text of the page"
+    - "No script that runs, and nothing loaded from another host"
