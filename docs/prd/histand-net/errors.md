@@ -6,6 +6,7 @@ Entry lines in order: Detected, Classification, Confirmed, Touches, Evidence (at
 ### E-001 The name card answers 200 at a second URL, ivan.histand.net/ivan
 Detected: 2026-11-16, adoption extract of site (vercel.json:10 @6d67871)
 Classification: code bug
+Confirmed: 2026-11-16, "Confirm the class (form)"
 Touches: FR-002, FR-003, FR-005
 Evidence: read-only requests to production, 2026-11-16:
   $ curl -sI -A prd-smoke https://ivan.histand.net/ivan
