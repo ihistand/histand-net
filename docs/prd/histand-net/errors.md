@@ -104,7 +104,7 @@ Recurrence of: -
 
 ### E-007 The family page answers 200 at a second address, histand.net/family/ with a trailing slash
 Detected: 2026-11-17, probe of the live site, 2026-11-17 (/prd-toolkit:prd-error)
-Classification: unclassified
+Classification: spec gap
 Touches: FR-004
 URL: https://histand.net/family/
 Evidence: Probe of the live site on 2026-11-17, one GET each, redirects not followed, User-Agent prd-smoke:
@@ -112,6 +112,6 @@ Evidence: Probe of the live site on 2026-11-17, one GET each, redirects not foll
   https://histand.net/family.html -> 308 https://histand.net/family
   https://ivan.histand.net/ivan/ -> 200
   /family without the slash answers 308 to / (AC-004.1); with the slash the family page is served at a second address.
-Diagnosis: -
+Diagnosis: Reproduced on 2026-11-17 with one GET each, redirects not followed: `https://histand.net/family/` answers 200 and `https://ivan.histand.net/ivan/` answers 200, while `/family` with no slash answers 308 to `/`. Root cause: `vercel.json` sets `cleanUrls` and no `trailingSlash` key, so the host serves `family.html` at `/family/` as well as at the clean URL, and the redirect of `/family` (vercel.json:5, source `/family`) matches only the path with no slash. Class against the PRD: AC-004.1 covers only "When a client requests `/family` on https://histand.net"; no AC, contract item or test case says what a path with a trailing slash answers (searched features/site.md, contracts/hosting.yaml and test-cases/site.yaml for a trailing slash; practices.md P-01 asks the reviewer whether `vercel.json` sets `trailingSlash`, which is a practice and no requirement). So the PRD is silent: the family page has a second address that FR-004's redirect was written to remove. The same root cause shows on the name card (`/ivan/`), beside the open E-001.
 Resolution: -
 Recurrence of: -
