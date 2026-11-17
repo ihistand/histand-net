@@ -81,3 +81,16 @@ Evidence: failing tests of the characterization suite, 2026-11-16 (integration l
 Diagnosis: AC-001.3 says the README "shall hold the texts `family.html`, `https://histand.net/` and `308`, and none of the texts `index.html`, `Single-page` and `301`", and AC-002.3 that it "shall hold the texts `ivan.html` and `https://ivan.histand.net/`". README.md still describes the site before commit 0636ed7 split it into two pages: line 3 calls it a "Single-page name card", line 5 names `index.html` as the page, and line 6 says the alias domains "301-redirect", where they answer 308 (E-002, not a defect). It names neither `family.html`, `ivan.html` nor `https://ivan.histand.net/`. The owner answered 2026-11-16 "yes, update README.md" (Q-04).
 Resolution: -
 Recurrence of: -
+
+### E-006 Files that are not the site are deployed and served
+Detected: 2026-11-16, failing tests T-010.2, T-010.3
+Classification: code bug
+Confirmed: 2026-11-16, "all are confirmed"
+Touches: FR-010
+URL: https://histand.net/scripts/make-assets.py
+Evidence: failing tests of the characterization suite, 2026-11-16:
+    tests/smoke/test_site.py:266: AssertionError: expected 404: ['https://histand.net/scripts/make-assets.py: 200', 'https://histand.net/scripts/fetch-icons.py: 200']
+    tests/integration/test_site.py:471: AssertionError: assert False   (no .vercelignore at the repository root)
+Diagnosis: AC-010.2 says "When a client requests, on https://histand.net, a committed file that is not part of the site (`README.md`, or any file under `scripts/`, `docs/` or `tests/`), the site shall answer 404", and AC-010.3 that "The repository root shall hold a `.vercelignore` file, which leaves the files of AC-010.2 out of the deploy". The repository has no `.vercelignore`, so Vercel deploys every committed file: production answers 200 for `https://histand.net/scripts/make-assets.py` and `https://histand.net/scripts/fetch-icons.py`. The owner answered 2026-11-16 "yes, the deploy should leave out files that are not served" (Q-05).
+Resolution: -
+Recurrence of: -
