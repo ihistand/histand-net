@@ -65,3 +65,19 @@ Diagnosis: the comment above the JSON-LD (ivan.html:40-45) says "Every claim her
   there "because the Projects list states them"; since b408abb they are in the Work list.
 Resolution: open
 Recurrence of: -
+
+### E-005 The README describes a single page, index.html, and a 301
+Detected: 2026-11-16, failing tests T-001.3, T-002.3
+Classification: code bug
+Confirmed: 2026-11-16, "all are confirmed"
+Touches: FR-001, FR-002
+Evidence: failing tests of the characterization suite, 2026-11-16 (integration level):
+    tests/integration/test_site.py:348: AssertionError: README.md does not hold 'family.html'
+    tests/integration/test_site.py:367: AssertionError: README.md does not hold 'ivan.html'
+  README.md @6d67871:
+    README.md:3: Single-page name card for Ivan Histand. Plain HTML, no build step, hosted on Vercel.
+    README.md:5: - `index.html` — the page. Edit the text directly.
+    README.md:6: - `vercel.json` — every other domain 301-redirects to `https://histand.net/`.
+Diagnosis: AC-001.3 says the README "shall hold the texts `family.html`, `https://histand.net/` and `308`, and none of the texts `index.html`, `Single-page` and `301`", and AC-002.3 that it "shall hold the texts `ivan.html` and `https://ivan.histand.net/`". README.md still describes the site before commit 0636ed7 split it into two pages: line 3 calls it a "Single-page name card", line 5 names `index.html` as the page, and line 6 says the alias domains "301-redirect", where they answer 308 (E-002, not a defect). It names neither `family.html`, `ivan.html` nor `https://ivan.histand.net/`. The owner answered 2026-11-16 "yes, update README.md" (Q-04).
+Resolution: -
+Recurrence of: -
