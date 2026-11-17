@@ -105,6 +105,7 @@ Recurrence of: -
 ### E-007 The family page answers 200 at a second address, histand.net/family/ with a trailing slash
 Detected: 2026-11-17, probe of the live site, 2026-11-17 (/prd-toolkit:prd-error)
 Classification: spec gap
+Confirmed: 2026-11-17, "Confirm the class (form)"
 Touches: FR-004
 URL: https://histand.net/family/
 Evidence: Probe of the live site on 2026-11-17, one GET each, redirects not followed, User-Agent prd-smoke:
