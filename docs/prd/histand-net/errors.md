@@ -56,6 +56,7 @@ Recurrence of: -
 ### E-004 The name card's Person schema claims topics the page does not show
 Detected: 2026-11-16, adoption extract of site (ivan.html:67 @6d67871)
 Classification: code bug
+Confirmed: 2026-11-16, "Confirm the class (form)"
 Touches: FR-017
 Diagnosis: the comment above the JSON-LD (ivan.html:40-45) says "Every claim here is one the page
   itself makes" and "anything added here has to be added to the page first". Its `knowsAbout`
