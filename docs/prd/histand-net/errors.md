@@ -101,3 +101,17 @@ Evidence: failing tests of the characterization suite, 2026-11-16:
 Diagnosis: AC-010.2 says "When a client requests, on https://histand.net, a committed file that is not part of the site (`README.md`, or any file under `scripts/`, `docs/` or `tests/`), the site shall answer 404", and AC-010.3 that "The repository root shall hold a `.vercelignore` file, which leaves the files of AC-010.2 out of the deploy". The repository has no `.vercelignore`, so Vercel deploys every committed file: production answers 200 for `https://histand.net/scripts/make-assets.py` and `https://histand.net/scripts/fetch-icons.py`. The owner answered 2026-11-16 "yes, the deploy should leave out files that are not served" (Q-05).
 Resolution: -
 Recurrence of: -
+
+### E-007 The family page answers 200 at a second address, histand.net/family/ with a trailing slash
+Detected: 2026-11-17, probe of the live site, 2026-11-17 (/prd-toolkit:prd-error)
+Classification: unclassified
+Touches: FR-004
+URL: https://histand.net/family/
+Evidence: Probe of the live site on 2026-11-17, one GET each, redirects not followed, User-Agent prd-smoke:
+  https://histand.net/family/ -> 200
+  https://histand.net/family.html -> 308 https://histand.net/family
+  https://ivan.histand.net/ivan/ -> 200
+  /family without the slash answers 308 to / (AC-004.1); with the slash the family page is served at a second address.
+Diagnosis: -
+Resolution: -
+Recurrence of: -
